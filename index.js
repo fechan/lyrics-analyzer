@@ -137,7 +137,12 @@
    * @param {Number} frequencyThreshold Minimum occurrences required to be shown on chart
    */
   function renderChart(rawLyrics, frequencyThreshold) {
-    let chartCtx = document.getElementById("chart");
+    let oldChart = document.getElementById("chart");
+    let newChart = document.createElement("canvas");
+    newChart.id = "chart";
+    oldChart.replaceWith(newChart);
+
+    rawLyrics = rawLyrics.toLowerCase();
     let uniqueWords = [...new Set(rawLyrics.match(/\S+/g) || [])]; // Creates a whitespace split array without dupes
     let frequencies = {};
     for (let word of uniqueWords) {
@@ -147,7 +152,7 @@
       }
     }
     console.log(frequencies);
-    let chart = new Chart(chartCtx, {
+    let chart = new Chart(newChart, {
       type: "bar",
       data: {
         datasets: [{
@@ -155,8 +160,6 @@
           data: Object.values(frequencies),
           backgroundColor: "#36a2eb"
         }],
-        
-        // These labels appear in the legend and in the tooltips when hovering different arcs
         labels: Object.keys(frequencies)
       }
     });
