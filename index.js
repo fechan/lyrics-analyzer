@@ -105,7 +105,9 @@
    */
   function lyricsFailed() {
     let lyricViewer = document.querySelector("article");
+    let songInfo = document.querySelector("aside");
     lyricViewer.innerHTML = "";
+    songInfo.innerHTML = "";
     let error = elementWithText("p", "Couldn't get lyrics. Maybe try another version of the song?");
     lyricViewer.appendChild(error);
   }
