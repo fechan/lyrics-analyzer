@@ -7,7 +7,7 @@ article {
   word-wrap: break-word;
 }
 
-input {
+input[type=text] {
   width: 100%;
 }
 

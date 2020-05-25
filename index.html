@@ -26,7 +26,12 @@
     </header>
     <hr>
     <main class="container">
-      <div class="row" id="analysis">
+      <div class="row flex-column d-flex" id="analysis">
+        <p>Number of unique words: <span id="num-unique"></span></p>
+        <div>
+          <input type="checkbox" id="at-least-two">
+          <label for="at-least-two">Hide words that appear only once</label>
+        </div>
         <canvas id="chart"></canvas>
       </div>
       <div class="row">

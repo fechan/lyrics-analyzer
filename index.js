@@ -4,11 +4,16 @@
   const stopTypingMs = 500;
   window.addEventListener('load', init);
   let searchTimeoutId = null;
+  let currentLyrics = null;
+  let currentChart = null;
 
   /**
    * Initializes the app
    */
   function init() {
+    let atLeastTwo = document.getElementById("at-least-two");
+    atLeastTwo.addEventListener("click", () => renderChart(currentLyrics, atLeastTwo.checked ? 2 : 1));
+
     let searchBar = document.querySelector("input[name='search']");
     searchBar.addEventListener('input', startSearchTimeout);
     searchBar.addEventListener('keyup', event => {
@@ -109,8 +114,8 @@
    * @param {Object} song object containing song data from suggest API method
    */
   function showSong(lyricsJSON, song) {
-    let rawLyrics = lyricsJSON.lyrics;
-    let verses = rawLyrics.split("\n\n");
+    currentLyrics = lyricsJSON.lyrics;
+    let verses = currentLyrics.split("\n\n");
     let lyricViewer = document.querySelector("article");
     lyricViewer.innerHTML = "";
     for (let verse of verses) {
@@ -118,7 +123,8 @@
       lyricViewer.appendChild(paragraph);
     }
 
-    renderChart(rawLyrics, 1);
+    let atLeastTwo = document.getElementById("at-least-two").checked;
+    renderChart(currentLyrics, atLeastTwo ? 2 : 1);
 
     let songDetails = document.querySelector("aside");
     songDetails.innerHTML = "";
@@ -137,10 +143,13 @@
    * @param {Number} frequencyThreshold Minimum occurrences required to be shown on chart
    */
   function renderChart(rawLyrics, frequencyThreshold) {
-    let oldChart = document.getElementById("chart");
-    let newChart = document.createElement("canvas");
-    newChart.id = "chart";
-    oldChart.replaceWith(newChart);
+    if (currentLyrics === null) {
+      return;
+    }
+    if (currentChart !== null) {
+      currentChart.destroy();
+    }
+    let chartCtx = document.getElementById("chart");
 
     rawLyrics = rawLyrics.toLowerCase();
     let uniqueWords = [...new Set(rawLyrics.match(/\S+/g) || [])]; // Creates a whitespace split array without dupes
@@ -151,8 +160,7 @@
         frequencies[word] = wordCount;
       }
     }
-    console.log(frequencies);
-    let chart = new Chart(newChart, {
+    currentChart = new Chart(chartCtx, {
       type: "bar",
       data: {
         datasets: [{
@@ -193,7 +201,6 @@
    */
   function fetchSucceeded(response) {
     if (response.ok || response.redirected) {
-      console.log("ok");
       return response;
     }
     throw Error("Fetch request failed: " + response.statusText);
