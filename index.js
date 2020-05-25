@@ -161,6 +161,16 @@
           backgroundColor: "#36a2eb"
         }],
         labels: Object.keys(frequencies)
+      },
+      options: {
+        scaleShowValues: true,
+        scales: {
+          xAxes: [{
+            ticks: {
+              autoSkip: false
+            }
+          }]
+        }
       }
     });
   }
