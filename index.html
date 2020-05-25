@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Bootstrap 4-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <script src="index.js"></script>
+    <title>Lyrics Analyzer</title>
+  </head>
+  <body>
+    <header class="container d-flex flex-column align-items-center">
+      <h1>Lyrics Analyzer</h1>
+      <label for="search">Search for a song:</label>
+      <input type="text" id="search" name="search">
+      <ul id="suggestions" class="d-none"></ul>
+    </header>
+    <hr>
+    <main class="container">
+      <div class="row" id="analysis">
+      </div>
+      <div class="row">
+        <article class="col-lg"></article>
+        <aside class="col-sm"></aside>
+      </div>
+    </main>
+    <footer class="container">
+      <p class="text-muted">
+        Song data, including lyrics and autocomplete suggestions, are from the
+        <a href="https://lyricsovh.docs.apiary.io/">lyrics.ovh Lyrics API</a>
+      </p>
+    </footer>
+  </body>
+</html>

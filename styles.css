@@ -1,0 +1,45 @@
+body {
+  font-family: sans-serif;
+}
+
+article {
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+input {
+  width: 100%;
+}
+
+aside {
+  text-align: end;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+img {
+  display: block;
+  margin: 0 0 1rem auto;
+}
+
+.badge {
+  margin-left: 0.5em;
+}
+
+#suggestions {
+  align-self: start;
+  display: block;
+  width: 100%;
+}
+
+#suggestions > li {
+  width: 100%;
+  border-bottom: 1px solid gray;
+}
+
+#suggestions > li:hover {
+  background-color: rgb(227, 248, 255);
+}
