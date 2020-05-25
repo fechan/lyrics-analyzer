@@ -42,11 +42,13 @@
    */
   function getSuggestions() {
     let query = document.querySelector("input[name='search']").value;
-    fetch(LYRICS_API_BASE + "/suggest/" + query)
-      .then(fetchSucceeded)
-      .then(response => response.json())
-      .then(showSuggestions)
-      .catch(suggestionFailed);
+    if (query !== "") {
+      fetch(LYRICS_API_BASE + "/suggest/" + query)
+        .then(fetchSucceeded)
+        .then(response => response.json())
+        .then(showSuggestions)
+        .catch(suggestionFailed);
+    }
   }
 
   /**
