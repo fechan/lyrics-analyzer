@@ -38,7 +38,7 @@
   function getSuggestions() {
     let query = document.querySelector("input[name='search']").value;
     fetch(LYRICS_API_BASE + "/suggest/" + query)
-      .then(fetchIsOk)
+      .then(fetchSucceeded)
       .then(response => response.json())
       .then(showSuggestions)
       .catch(suggestionFailed);
@@ -87,7 +87,7 @@
   function suggestionClicked(song) {
     document.getElementById("suggestions").classList.add("d-none");
     fetch(`${LYRICS_API_BASE}/v1/${song.artist.name}/${song.title}`)
-      .then(fetchIsOk)
+      .then(fetchSucceeded)
       .then(response => response.json())
       .then(lyricsJSON => showSong(lyricsJSON, song))
       .catch(lyricsFailed);
@@ -109,13 +109,38 @@
    * @param {Object} song object containing song data from suggest API method
    */
   function showSong(lyricsJSON, song) {
-    let verses = lyricsJSON.lyrics.split("\n\n");
+    let rawLyrics = lyricsJSON.lyrics;
+    let verses = rawLyrics.split("\n\n");
     let lyricViewer = document.querySelector("article");
     lyricViewer.innerHTML = "";
     for (let verse of verses) {
       let paragraph = elementWithText("p", verse);
       lyricViewer.appendChild(paragraph);
     }
+
+    let chartCtx = document.getElementById("chart");
+    let uniqueWords = [...new Set(rawLyrics.match(/\S+/g) || [])]; // Creates a whitespace split array without dupes
+    let frequencies = [];
+    for (let word of uniqueWords) {
+      let wordCount = rawLyrics.match(new RegExp(word, "g")).length;
+      frequencies.push(wordCount)
+    }
+    console.log(frequencies);
+    console.log(uniqueWords);
+    let chart = new Chart(chartCtx, {
+      type: "bar",
+      data: {
+        datasets: [{
+          label: "Number of occurrences",
+          data: frequencies,
+          backgroundColor: "#36a2eb"
+        }],
+        
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: uniqueWords
+      }
+    });
+
 
     let songDetails = document.querySelector("aside");
     songDetails.innerHTML = "";
@@ -146,6 +171,7 @@
    */
   function fetchSucceeded(response) {
     if (response.ok || response.redirected) {
+      console.log("ok");
       return response;
     }
     throw Error("Fetch request failed: " + response.statusText);
