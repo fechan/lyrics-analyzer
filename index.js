@@ -118,29 +118,7 @@
       lyricViewer.appendChild(paragraph);
     }
 
-    let chartCtx = document.getElementById("chart");
-    let uniqueWords = [...new Set(rawLyrics.match(/\S+/g) || [])]; // Creates a whitespace split array without dupes
-    let frequencies = [];
-    for (let word of uniqueWords) {
-      let wordCount = rawLyrics.match(new RegExp(word, "g")).length;
-      frequencies.push(wordCount)
-    }
-    console.log(frequencies);
-    console.log(uniqueWords);
-    let chart = new Chart(chartCtx, {
-      type: "bar",
-      data: {
-        datasets: [{
-          label: "Number of occurrences",
-          data: frequencies,
-          backgroundColor: "#36a2eb"
-        }],
-        
-        // These labels appear in the legend and in the tooltips when hovering different arcs
-        labels: uniqueWords
-      }
-    });
-
+    renderChart(rawLyrics, 1);
 
     let songDetails = document.querySelector("aside");
     songDetails.innerHTML = "";
@@ -151,6 +129,37 @@
     let ytLink = elementWithText("a", "Search on YouTube »");
     ytLink.href = `https://www.youtube.com/results?search_query=${song.artist.name} - ${song.title}`;
     [title, album, albumCover, ytLink].forEach(element => songDetails.appendChild(element));
+  }
+
+  /**
+   * Shows the frequency chart of words in lyrics
+   * @param {String} rawLyrics Raw lyrics string
+   * @param {Number} frequencyThreshold Minimum occurrences required to be shown on chart
+   */
+  function renderChart(rawLyrics, frequencyThreshold) {
+    let chartCtx = document.getElementById("chart");
+    let uniqueWords = [...new Set(rawLyrics.match(/\S+/g) || [])]; // Creates a whitespace split array without dupes
+    let frequencies = {};
+    for (let word of uniqueWords) {
+      let wordCount = rawLyrics.match(new RegExp(word, "g")).length;
+      if (wordCount >= frequencyThreshold) {
+        frequencies[word] = wordCount;
+      }
+    }
+    console.log(frequencies);
+    let chart = new Chart(chartCtx, {
+      type: "bar",
+      data: {
+        datasets: [{
+          label: "Number of occurrences",
+          data: Object.values(frequencies),
+          backgroundColor: "#36a2eb"
+        }],
+        
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: Object.keys(frequencies)
+      }
+    });
   }
 
   /**
