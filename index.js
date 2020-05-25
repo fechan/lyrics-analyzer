@@ -123,6 +123,9 @@
       lyricViewer.appendChild(paragraph);
     }
 
+    let analysis = document.getElementById("analysis");
+    analysis.classList.remove("d-none");
+    analysis.classList.add("d-flex");
     let atLeastTwo = document.getElementById("at-least-two").checked;
     renderChart(currentLyrics, atLeastTwo ? 2 : 1);
 
