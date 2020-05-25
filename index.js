@@ -144,8 +144,8 @@
    * Throws an error for a failed fetch call, returns the response otherwise
    * @param {Response} response response to a fetch call
    */
-  function fetchIsOk(response) {
-    if (response.ok) {
+  function fetchSucceeded(response) {
+    if (response.ok || response.redirected) {
       return response;
     }
     throw Error("Fetch request failed: " + response.statusText);
