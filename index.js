@@ -153,6 +153,7 @@
 
     rawLyrics = rawLyrics.toLowerCase();
     let uniqueWords = [...new Set(rawLyrics.match(/\S+/g) || [])]; // Creates a whitespace split array without dupes
+    document.getElementById("num-unique").textContent = uniqueWords.length;
     let frequencies = {};
     for (let word of uniqueWords) {
       let wordCount = rawLyrics.match(new RegExp(word, "g")).length;
