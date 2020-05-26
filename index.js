@@ -102,8 +102,10 @@
 
   /**
    * Show fail message for showing lyrics
+   * @param {Error} reason reason for error
    */
-  function lyricsFailed() {
+  function lyricsFailed(reason) {
+    console.error(reason);
     let lyricViewer = document.querySelector("article");
     let songInfo = document.querySelector("aside");
     lyricViewer.innerHTML = "";
@@ -163,7 +165,8 @@
     document.getElementById("num-unique").textContent = uniqueWords.length;
     let frequencies = {};
     for (let word of uniqueWords) {
-      let wordCount = rawLyrics.match(new RegExp(word, "g")).length;
+      let regexString = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      let wordCount = rawLyrics.match(new RegExp(regexString, "g")).length;
       if (wordCount >= frequencyThreshold) {
         frequencies[word] = wordCount;
       }
