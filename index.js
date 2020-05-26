@@ -121,13 +121,8 @@
    */
   function showSong(lyricsJSON, song) {
     currentLyrics = lyricsJSON.lyrics;
-    let verses = currentLyrics.split("\n\n");
     let lyricViewer = document.querySelector("article");
-    lyricViewer.innerHTML = "";
-    for (let verse of verses) {
-      let paragraph = elementWithText("p", verse);
-      lyricViewer.appendChild(paragraph);
-    }
+    lyricViewer.textContent = currentLyrics;
 
     let analysis = document.getElementById("analysis");
     analysis.classList.remove("d-none");
