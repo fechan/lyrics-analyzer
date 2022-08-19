@@ -1,7 +1,7 @@
 "use strict";
 (function() {
   const LYRICS_API_BASE = "https://api.lyrics.ovh";
-  const stopTypingMs = 500;
+  const stopTypingMs = 50;
   window.addEventListener('load', init);
   let searchTimeoutId = null;
   let currentLyrics = null;
